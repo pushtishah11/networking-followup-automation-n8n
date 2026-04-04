@@ -1,0 +1,329 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Networking Input",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name of Contact"
+            },
+            {
+              "fieldLabel": "Company of Contact"
+            },
+            {
+              "fieldLabel": "Role of Contact"
+            },
+            {
+              "fieldLabel": "Where We Met"
+            },
+            {
+              "fieldLabel": "What We Talked About",
+              "fieldType": "textarea"
+            },
+            {
+              "fieldLabel": "Contact Email",
+              "fieldType": "email"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -288,
+        -208
+      ],
+      "id": "022f84ee-9beb-4ff0-9a39-b355e2f60f1c",
+      "name": "On form submission",
+      "webhookId": "4be97095-d409-4d4e-b3f1-e21efb2afdaa"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Using the following information below, please draft a follow-up networking email to thank the individual and open any potential routes:\n\nMy Name: Pushti Shah\n\nContact Name: {{ $json['Name of Contact'] }}\nCompany Name: {{ $json['Company of Contact'] }}\nRole: {{ $json['Role of Contact'] }}\nWhere We Met: {{ $json['Where We Met'] }}\nWhat We Talked About: {{ $json['What We Talked About'] }}\nContact Email: {{ $json['Contact Email'] }}\n",
+        "hasOutputParser": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -64,
+        -48
+      ],
+      "id": "457bf471-628d-413c-bb63-561c611e4099",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -112,
+        144
+      ],
+      "id": "455bc256-fa67-4fc3-908f-a1a0089fc692",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6PivsTCgpFdeR9rv",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        336,
+        -192
+      ],
+      "id": "811d39bd-07bd-4d1b-852a-7b35ea235123",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"subject\": \"Networking Event\",\n\t\"body\": \"Hi Juan...\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        160
+      ],
+      "id": "0cfb3e78-07c6-4e31-adf8-97bc8a275e44",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QmUEbX8-CA1sYdV9XVMDeBiWq-R0qXvyAoAfDjT27uc",
+          "mode": "list",
+          "cachedResultName": "N8N Workflow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QmUEbX8-CA1sYdV9XVMDeBiWq-R0qXvyAoAfDjT27uc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QmUEbX8-CA1sYdV9XVMDeBiWq-R0qXvyAoAfDjT27uc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json['Name of Contact'] }}",
+            "Company": "={{ $json['Company of Contact'] }}",
+            "Role of Contact": "={{ $json['Role of Contact'] }}",
+            "Where We Met": "={{ $json['Where We Met'] }}",
+            "What We Talked About ": "={{ $json['What We Talked About'] }}",
+            "Email": "={{ $json['Contact Email'] }}",
+            "Follow-up Draft": "={{ $json.output.body }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Role of Contact",
+              "displayName": "Role of Contact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Where We Met",
+              "displayName": "Where We Met",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "What We Talked About ",
+              "displayName": "What We Talked About ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Follow-up Draft",
+              "displayName": "Follow-up Draft",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        560,
+        -272
+      ],
+      "id": "acd5b9b5-392d-4abb-b8bc-f1b3d3ef95ef",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "M0WigQbtNmlH89FG",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $json.output.subject }}",
+        "message": "={{ $json.output.body }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        544,
+        -64
+      ],
+      "id": "b9040972-44d5-43b3-adcf-ac40f6542058",
+      "name": "Create a draft",
+      "webhookId": "4b080ca5-1c07-4d8b-8bae-623083c1d796",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "dfJLiQbTyaxu88mA",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create a draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d73f189f-34f1-4d3c-b8ba-8bdddbc98519",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6a566ccfcf1d66428590ec365b20bc5b331ed36a2b94a87177c1b82fc8204f04"
+  },
+  "id": "5r4oUZKH05xOe1dM",
+  "tags": []
+}
