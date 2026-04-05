@@ -91,7 +91,7 @@ A **Structured Output Parser** ensures the response is split cleanly into `subje
 
 > - Workflow graph: ![Workflow](workflow-screenshot.png)
 > - Example form input ![Form Input](input-form.png)
-> - Example generated email![Draft Email](draft-form.png)
+> - Example generated email![Draft Email](draft.png)
 
 ---
 
